@@ -22,7 +22,7 @@ class ZtrackerClient(LoginClient):
             response = self._client.get(ZtrackerURLs.INDEX)
         except Exception as e:
             raise ConnectionError(
-                "Error during ztracker login post request!") from e
+                "Error during ztracker login POST request!") from e
 
         if response.url != ZtrackerURLs.INDEX:
             self.logout()
@@ -37,7 +37,7 @@ class ZtrackerClient(LoginClient):
                 ZtrackerURLs.SEARCH.format(query=query, page=page))
         except Exception as e:
             raise ConnectionError(
-                "Error during ztracker search post request, check internet connection!") from e
+                "Error during ztracker search GET request, check internet connection!") from e
 
         self._parser.feed(response.text)
 

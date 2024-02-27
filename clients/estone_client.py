@@ -23,7 +23,7 @@ class EstoneClient(LoginClient):
             response = self._client.post(EstoneURLs.LOGIN, headers=headers, data=form_data)
         except Exception as e:
             raise ConnectionError(
-                "Error during estone login post request, check internet connection!") from e
+                "Error during estone login POST request, check internet connection!") from e
 
         if response.url != EstoneURLs.INDEX:
             self.logout()
@@ -38,7 +38,7 @@ class EstoneClient(LoginClient):
                 EstoneURLs.SEARCH.format(query=query, page=page))
         except Exception as e:
             raise ConnectionError(
-                "Error during estone search post request, check internet connection!") from e
+                "Error during estone search GET request, check internet connection!") from e
 
         self._parser.feed(response.text)
 

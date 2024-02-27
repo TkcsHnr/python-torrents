@@ -13,7 +13,7 @@ class ThePirateBayClient(Client):
                 ThePirateBayURLs.SEARCH.format(query=query, page=(page-1)))
         except Exception as e:
             raise ConnectionError(
-                "Error during thepiratebay search post request, check internet connection!") from e
+                "Error during thepiratebay search GET request, check internet connection!") from e
 
         self._parser.feed(response.text)
 

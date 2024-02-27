@@ -17,7 +17,7 @@ class NcoreClient(LoginClient):
             response = self._client.post(NcoreURLs.LOGIN, data=form_data)
         except Exception as e:
             raise ConnectionError(
-                "Error during ncore login post request, check internet connection!") from e
+                "Error during ncore login POST request, check internet connection!") from e
 
         if response.url != NcoreURLs.INDEX:
             self.logout()
@@ -35,7 +35,7 @@ class NcoreClient(LoginClient):
                 NcoreURLs.SEARCH.format(query=query, page=page))
         except Exception as e:
             raise ConnectionError(
-                "Error during ncore search post request, check internet connection!") from e
+                "Error during ncore search GET request, check internet connection!") from e
 
         self._parser.feed(response.text)
 
