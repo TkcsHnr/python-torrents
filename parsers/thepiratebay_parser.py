@@ -24,8 +24,8 @@ class ThePirateBayParser(Parser):
             if not link_tag:
                 continue
 
-            id = self._id_pattern.search(link_tag.attrs.get('href'))[1]
-            title = link_tag.attrs.get('title')
+            id = self._id_pattern.search(link_tag.get('href'))[1]
+            title = link_tag.get('title')
 
             desc = row.select_one('.detDesc')
             size = self._size_pattern.search(desc.text)[1]
@@ -34,7 +34,7 @@ class ThePirateBayParser(Parser):
             leech = row.select_one('td:last-child').text
 
             magnet_link = row.select_one('td:nth-child(2) > a')
-            download = magnet_link.attrs.get('href')
+            download = magnet_link.get('href')
 
             yield (Torrent(int(id), title, size, int(seed), int(leech), download))
 

@@ -24,9 +24,9 @@ class ZtrackerParser(Parser):
 
         for row in rows:
             link_tag = row.select_one('td:nth-child(2) a')
-            id = self._id_pattern.search(link_tag.attrs.get('href'))[1]
+            id = self._id_pattern.search(link_tag.get('href'))[1]
             title = self._title_pattern.search(
-                link_tag.attrs.get('onmouseover'))[1]
+                link_tag.get('onmouseover'))[1]
 
             size_td = row.select_one('td:nth-last-child(2)')
             size = size_td.text.replace('+', '').strip()

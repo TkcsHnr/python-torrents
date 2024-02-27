@@ -17,7 +17,7 @@ class Parser1337x(Parser):
         for row in rows:
             link_tag = row.select_one('td.name > a:not(.icon)')
 
-            id = self._id_pattern.search(link_tag.attrs.get('href'))[1]
+            id = self._id_pattern.search(link_tag.get('href'))[1]
             title = link_tag.text
 
             seed = row.select_one('td.seeds').text
@@ -50,6 +50,6 @@ class MagnetLink1337xParser:
     def get_magnet_link(self, id: int) -> str:
         download_button = self._soup.select_one('.torrentdown1')
 
-        magnet_link = download_button.attrs.get('href')
+        magnet_link = download_button.get('href')
 
         return magnet_link

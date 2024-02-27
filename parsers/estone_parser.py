@@ -15,9 +15,9 @@ class EstoneParser(Parser):
             tagbox: Tag = box
             data_container = tagbox.select_one('div > div:nth-child(3)')
             
-            id = self._id_pattern.search(tagbox.attrs.get('id'))[1]
+            id = self._id_pattern.search(tagbox.get('id'))[1]
             link_tag = data_container.select_one('div:first-child > div > a:last-of-type')
-            title = link_tag.attrs.get('title')
+            title = link_tag.get('title')
             size = data_container.select_one('div:nth-child(5) > div').text.strip()
             seed = data_container.select_one('div:nth-child(6) > div > a').text
             leech = data_container.select_one('div:nth-child(7) > div > a').text

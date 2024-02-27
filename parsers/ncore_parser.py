@@ -1,5 +1,5 @@
 from parsers import Parser
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 from utils import Torrent, NcoreURLs, NcoreKeyNotFoundError
 import re
 
@@ -17,18 +17,17 @@ class NcoreParser(Parser):
         raise NcoreKeyNotFoundError("Couldn't find the unique key needed for downloading torrents!")
 
     def get_torrents(self):
-        boxes = self._soup.find_all("div", {"class": ["box_nagy", "box_nagy2"]})
+        boxes = self._soup.select('.box_nagy, .box_nagy2')
 
         key = self._get_key(self._soup)
         for box in boxes:
-            link_tag = box.find(
-                "div", {"class": ["torrent_txt", "torrent_txt2"]}).find("a")
+            box: Tag = box
+            link_tag = box.select_one('.torrent_txt > a, .torrent_txt2 > a')
             id = self._id_pattern.search(link_tag.get("href"))[1]
             title = link_tag.get("title")
-            size = box.find(
-                "div", {"class": ["box_meret", "box_meret2"]}).string
-            seed = box.find("div", {"class": ["box_s", "box_s2"]}).string
-            leech = box.find("div", {"class": ["box_l", "box_l2"]}).string
+            size = box.select_one('.box_meret, .box_meret2').string
+            seed = box.select_one('.box_s, .box_s2').string
+            leech = box.select_one('.box_l, .box_l2').string
             download_link = NcoreURLs.DOWNLOAD.format(id=id, key=key)
 
             yield Torrent(int(id), title, size, int(seed), int(leech), download_link)
