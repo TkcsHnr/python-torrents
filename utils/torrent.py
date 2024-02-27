@@ -6,3 +6,13 @@ class Torrent:
         self.seed = seed
         self.leech = leech
         self.download = download
+        
+    def __str__(self) -> str:
+        return str({
+            "id": self.id,
+            "title": self.title,
+            "size": self.size,
+            "seed": self.seed,
+            "leech": self.leech,
+            "download": self.download
+        })

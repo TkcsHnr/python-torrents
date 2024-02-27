@@ -21,3 +21,7 @@ class EstoneURLs:
     INDEX = BASE + "/"
     SEARCH = BASE + "/bongeszo.php?kereses_nev={query}&lap={page}"
     DOWNLOAD = BASE + "/download.php?id={id}&name={title}.torrent"
+
+
+class ThePirateBayURLs:
+    SEARCH = "https://thepiratebay0.org/s/?page={page}&q={query}"
