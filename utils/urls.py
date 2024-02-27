@@ -25,3 +25,9 @@ class EstoneURLs:
 
 class ThePirateBayURLs:
     SEARCH = "https://thepiratebay0.org/s/?page={page}&q={query}"
+    
+
+class URLs1337x:
+    BASE = "https://www.1377x.to"
+    SEARCH = BASE + "/search/{query}/{page}/"
+    TORRENT = BASE + "/torrent/{id}/d"
