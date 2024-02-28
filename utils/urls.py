@@ -11,10 +11,11 @@ class ZtrackerURLs:
     LOGIN = BASE + "/login.php"
     TAKELOGIN = BASE + "/takelogin.php"
     INDEX = BASE + "/index.php"
-    SEARCH = BASE + "/browse_old.php?keywords={query}&search_type=t_name&page={page}"
+    SEARCH = BASE + \
+        "/browse_old.php?keywords={query}&search_type=t_name&page={page}"
     DOWNLOAD = BASE + "/download.php?id={id}"
-    
-    
+
+
 class EstoneURLs:
     BASE = "https://estone.cc"
     LOGIN = BASE + "/login.php"
@@ -25,9 +26,14 @@ class EstoneURLs:
 
 class ThePirateBayURLs:
     SEARCH = "https://thepiratebay0.org/s/?page={page}&q={query}"
-    
+
 
 class URLs1337x:
     BASE = "https://www.1377x.to"
     SEARCH = BASE + "/search/{query}/{page}/"
     TORRENT = BASE + "/torrent/{id}/d"
+
+
+class QBitTorrentURLs:
+    LOGIN = "/api/v2/auth/login" 
+    ADD = "/api/v2/torrents/add"
