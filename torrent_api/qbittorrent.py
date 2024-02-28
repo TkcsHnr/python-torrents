@@ -1,5 +1,5 @@
 import httpx
-from utils import QBitTorrentURLs
+from utils import QBitTorrentURLs, QBitTorrentAuthError
 
 
 class QBitTorrentClient:
@@ -26,7 +26,8 @@ class QBitTorrentClient:
 
     def download(self, url: str, savepath: str = None):
         if not self._SID:
-            self._login()
+            raise QBitTorrentAuthError(
+                "SID for qbittorrent authentication not found")
 
         payload = {
             "urls": url,
@@ -41,11 +42,3 @@ class QBitTorrentClient:
                 self._url + QBitTorrentURLs.ADD, data=payload, cookies=cookies)
         except Exception as e:
             print(e)
-
-
-class QBitLoginParser:
-    pass
-
-
-class QbitDownloadParser:
-    pass

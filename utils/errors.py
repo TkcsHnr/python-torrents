@@ -6,3 +6,6 @@ class ConnectionError(Exception):
 
 class NcoreKeyNotFoundError(Exception):
     pass
+
+class QBitTorrentAuthError(Exception):
+    pass
