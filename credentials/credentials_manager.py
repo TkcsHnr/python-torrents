@@ -1,12 +1,17 @@
 from dotenv import load_dotenv, set_key
 import os
 from dataclasses import dataclass
+from clients import ClientName
+from utils import CredentialsNotFoundError
 
 
 @dataclass
 class ClientCredentials:
     username: str
     password: str
+
+    def missing(self) -> bool:
+        return self.username is None or self.password is None
 
 
 @dataclass
@@ -15,6 +20,9 @@ class QBitTorrentCredentials:
     port: int
     username: str
     password: str
+
+    def missing(self) -> bool:
+        return self.host is None or self.port is None or self.username is None or self.password is None
 
 
 class CredentialsManager:
@@ -26,18 +34,24 @@ class CredentialsManager:
         self._qbittorrent_username_key = 'qbittorrent_username'
         self._qbittorrent_password_key = 'qbittorrent_password'
 
-    def get_client_credentials(self, name_prefix: str) -> ClientCredentials:
-        username_key = name_prefix + '_username'
-        password_key = name_prefix + '_password'
+    def _get_env(self, key: str):
+        if key in os.environ.keys():
+            return os.environ[key]
 
-        username = os.environ[username_key]
-        password = os.environ[password_key]
+        return None
+
+    def get_client_credentials(self, name_prefix: ClientName) -> ClientCredentials:
+        username_key = name_prefix.value + '_username'
+        password_key = name_prefix.value + '_password'
+
+        username = self._get_env(username_key)
+        password = self._get_env(password_key)
 
         return ClientCredentials(username, password)
 
-    def set_client_credentials(self, name_prefix: str, username: str, password: str):
-        username_key = name_prefix + '_username'
-        password_key = name_prefix + '_password'
+    def set_client_credentials(self, name_prefix: ClientName, username: str, password: str):
+        username_key = name_prefix.value + '_username'
+        password_key = name_prefix.value + '_password'
 
         if username:
             os.environ[username_key] = username
@@ -47,10 +61,10 @@ class CredentialsManager:
             set_key('.env', password_key, password)
 
     def get_qbittorrent_credentials(self) -> QBitTorrentCredentials:
-        host = os.environ[self._qbittorrent_host_key]
-        port = os.environ[self._qbittorrent_port_key]
-        username = os.environ[self._qbittorrent_username_key]
-        password = os.environ[self._qbittorrent_password_key]
+        host = self._get_env(self._qbittorrent_host_key)
+        port = self._get_env(self._qbittorrent_port_key)
+        username = self._get_env(self._qbittorrent_username_key)
+        password = self._get_env(self._qbittorrent_password_key)
 
         return QBitTorrentCredentials(host, port, username, password)
 
