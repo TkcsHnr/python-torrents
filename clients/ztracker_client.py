@@ -1,13 +1,12 @@
-from clients import LoginClient
+from clients import LoginClient, ClientName
 from parsers import ZtrackerParser
 from utils import SearchResults, ZtrackerURLs, CredentialError, ConnectionError
-from httpx import ReadTimeout
 
 
 class ZtrackerClient(LoginClient):
 
     def __init__(self) -> None:
-        super().__init__(ZtrackerParser(), timeout=10)
+        super().__init__(ClientName.ZTRACKER, ZtrackerParser(), timeout=10)
 
     def login(self, username: str, password: str) -> None:
         self._client.cookies.clear()

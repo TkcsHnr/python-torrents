@@ -1,11 +1,11 @@
-from clients import LoginClient
+from clients import LoginClient, ClientName
 from parsers import NcoreParser
 from utils import SearchResults, NcoreURLs, CredentialError, ConnectionError
 
 
 class NcoreClient(LoginClient):
     def __init__(self) -> None:
-        super().__init__(NcoreParser())
+        super().__init__(ClientName.NCORE, NcoreParser())
 
     def login(self, username: str, password: str):
         self._client.cookies.clear()

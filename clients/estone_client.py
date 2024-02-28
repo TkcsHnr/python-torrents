@@ -1,12 +1,11 @@
-from clients import LoginClient
+from clients import LoginClient, ClientName
 from parsers import EstoneParser
 from utils import SearchResults, EstoneURLs, CredentialError, ConnectionError
-import random
 
 
 class EstoneClient(LoginClient):
     def __init__(self) -> None:
-        super().__init__(EstoneParser(), timeout=10)
+        super().__init__(ClientName.ESTONE, EstoneParser(), timeout=10)
 
     def login(self, username: str, password: str):
         self._client.cookies.clear()
@@ -18,9 +17,10 @@ class EstoneClient(LoginClient):
             'login_password': password,
             'returnto': '/'
         }
-        
+
         try:
-            response = self._client.post(EstoneURLs.LOGIN, headers=headers, data=form_data)
+            response = self._client.post(
+                EstoneURLs.LOGIN, headers=headers, data=form_data)
         except Exception as e:
             raise ConnectionError(
                 "Error during estone login POST request, check internet connection!") from e
