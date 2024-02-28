@@ -25,7 +25,7 @@ class ThePirateBayParser(Parser):
                 continue
 
             id = self._id_pattern.search(link_tag.get('href'))[1]
-            title = link_tag.get('title')
+            title = link_tag.text
 
             desc = row.select_one('.detDesc')
             size = self._size_pattern.search(desc.text)[1]
