@@ -39,7 +39,7 @@ class LoginClient(Client):
     def __init__(self, name: ClientName, parser: Parser, timeout: int = 1) -> None:
         super().__init__(parser, timeout=timeout)
         self._logged_in = False
-        self.name = name.value
+        self.name = name
 
     @abstractmethod
     def login(self, username: str, password: str) -> None:
