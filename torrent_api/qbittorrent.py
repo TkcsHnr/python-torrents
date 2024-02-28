@@ -1,7 +1,9 @@
 import httpx
-from utils import QBitTorrentURLs, QBitTorrentAuthError, ConnectionError
+from utils import QBitTorrentAuthError, ConnectionError
 from credentials import QBitTorrentCredentials
 
+QBIT_LOGIN = "/api/v2/auth/login" 
+QBIT_ADD = "/api/v2/torrents/add"
 
 class QBitTorrentClient:
 
@@ -24,7 +26,7 @@ class QBitTorrentClient:
         }
         try:
             response = httpx.post(
-                self._url + QBitTorrentURLs.LOGIN, data=credentials)
+                self._url + QBIT_LOGIN, data=credentials)
             self._SID = response.cookies.get('SID')
         except Exception as e:
             raise ConnectionError(
@@ -46,7 +48,7 @@ class QBitTorrentClient:
 
         try:
             httpx.post(
-                self._url + QBitTorrentURLs.ADD, data=payload, cookies=cookies)
+                self._url + QBIT_ADD, data=payload, cookies=cookies)
         except Exception as e:
             raise ConnectionError(
                 "Error during qbittorrent download POST request") from e

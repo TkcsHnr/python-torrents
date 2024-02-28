@@ -2,7 +2,6 @@ from dotenv import load_dotenv, set_key
 import os
 from dataclasses import dataclass
 from clients import ClientName
-from utils import CredentialsNotFoundError
 
 
 @dataclass

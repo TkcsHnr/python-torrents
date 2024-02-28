@@ -1,7 +1,9 @@
 from parsers import Parser
 from bs4 import BeautifulSoup, Tag
-from utils import Torrent, NcoreURLs, NcoreKeyNotFoundError
+from utils import Torrent, NcoreKeyNotFoundError
 import re
+
+URL_DOWNLOAD = "https://ncore.pro/torrents.php?action=download&id={id}&key={key}"
 
 class NcoreParser(Parser):
     def __init__(self) -> None:
@@ -28,7 +30,7 @@ class NcoreParser(Parser):
             size = box.select_one('.box_meret, .box_meret2').string
             seed = box.select_one('.box_s, .box_s2').string
             leech = box.select_one('.box_l, .box_l2').string
-            download_link = NcoreURLs.DOWNLOAD.format(id=id, key=key)
+            download_link = URL_DOWNLOAD.format(id=id, key=key)
 
             yield Torrent(int(id), title, size, int(seed), int(leech), download_link)
 

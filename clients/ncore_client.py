@@ -1,6 +1,11 @@
 from clients import LoginClient, ClientName
 from parsers import NcoreParser
-from utils import SearchResults, NcoreURLs, CredentialError, ConnectionError
+from utils import SearchResults, CredentialError, ConnectionError
+
+URL_BASE = "https://ncore.pro"
+URL_INDEX = URL_BASE + "/index.php"
+URL_LOGIN = URL_BASE + "/login.php"
+URL_SEARCH = URL_BASE + "/torrents.php?mire={query}&oldal={page}"
 
 
 class NcoreClient(LoginClient):
@@ -14,12 +19,12 @@ class NcoreClient(LoginClient):
             'pass': password
         }
         try:
-            response = self._client.post(NcoreURLs.LOGIN, data=form_data)
+            response = self._client.post(URL_LOGIN, data=form_data)
         except Exception as e:
             raise ConnectionError(
                 "Error during ncore login POST request, check internet connection!") from e
 
-        if response.url != NcoreURLs.INDEX:
+        if response.url != URL_INDEX:
             self.logout()
             raise CredentialError(
                 "Error during ncore login, check credentials!")
@@ -32,7 +37,7 @@ class NcoreClient(LoginClient):
 
         try:
             response = self._client.get(
-                NcoreURLs.SEARCH.format(query=query, page=page))
+                URL_SEARCH.format(query=query, page=page))
         except Exception as e:
             raise ConnectionError(
                 "Error during ncore search GET request, check internet connection!") from e

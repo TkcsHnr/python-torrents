@@ -1,7 +1,8 @@
 from parsers import Parser
-from utils import ZtrackerURLs, Torrent
+from utils import Torrent
 import re
 
+URL_DOWNLOAD = "http://ztracker.cc/download.php?id={id}"
 
 class ZtrackerParser(Parser):
 
@@ -32,7 +33,7 @@ class ZtrackerParser(Parser):
             size = size_td.text.replace('+', '').strip()
             seed = row.select_one('td:nth-child(7)').text
             leech = row.select_one('td:nth-child(8)').text
-            download = ZtrackerURLs.DOWNLOAD.format(id=id)
+            download = URL_DOWNLOAD.format(id=id)
 
             yield Torrent(int(id), title, size, int(seed), int(leech), download)
 

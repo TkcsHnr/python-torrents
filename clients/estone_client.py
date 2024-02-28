@@ -1,6 +1,12 @@
 from clients import LoginClient, ClientName
 from parsers import EstoneParser
-from utils import SearchResults, EstoneURLs, CredentialError, ConnectionError
+from utils import SearchResults, CredentialError, ConnectionError
+
+
+URL_BASE = "https://estone.cc"
+URL_LOGIN = URL_BASE + "/login.php"
+URL_INDEX = URL_BASE + "/"
+URL_SEARCH = URL_BASE + "/bongeszo.php?kereses_nev={query}&lap={page}"
 
 
 class EstoneClient(LoginClient):
@@ -10,7 +16,7 @@ class EstoneClient(LoginClient):
     def login(self, username: str, password: str):
         self._client.cookies.clear()
         headers = {
-            'Referer': 'https://estone.cc/login.php'
+            'Referer': URL_LOGIN
         }
         form_data = {
             'login_username': username,
@@ -20,12 +26,12 @@ class EstoneClient(LoginClient):
 
         try:
             response = self._client.post(
-                EstoneURLs.LOGIN, headers=headers, data=form_data)
+                URL_LOGIN, headers=headers, data=form_data)
         except Exception as e:
             raise ConnectionError(
                 "Error during estone login POST request, check internet connection!") from e
 
-        if response.url != EstoneURLs.INDEX:
+        if response.url != URL_INDEX:
             self.logout()
             raise CredentialError(
                 "Error during estone login, check credentials!")
@@ -35,7 +41,7 @@ class EstoneClient(LoginClient):
     def search(self, query: str, page: int = 1):
         try:
             response = self._client.get(
-                EstoneURLs.SEARCH.format(query=query, page=page))
+                URL_SEARCH.format(query=query, page=page))
         except Exception as e:
             raise ConnectionError(
                 "Error during estone search GET request, check internet connection!") from e

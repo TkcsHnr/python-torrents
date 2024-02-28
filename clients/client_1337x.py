@@ -1,6 +1,10 @@
 from clients import Client
-from utils import SearchResults, URLs1337x
+from utils import SearchResults
 from parsers import Parser1337x, MagnetLink1337xParser
+
+URL_BASE = "https://www.1377x.to"
+URL_SEARCH = URL_BASE + "/search/{query}/{page}/"
+URL_TORRENT = URL_BASE + "/torrent/{id}/d"
 
 
 class Client1337x(Client):
@@ -12,7 +16,7 @@ class Client1337x(Client):
     def search(self, query: str, page: int = 1) -> SearchResults:
         try:
             response = self._client.get(
-                URLs1337x.SEARCH.format(query=query, page=page))
+                URL_SEARCH.format(query=query, page=page))
         except Exception as e:
             raise ConnectionError(
                 "Error during 1337x search GET request, check internet connection!") from e
@@ -27,15 +31,11 @@ class Client1337x(Client):
     def get_magnet_link(self, id: int) -> str:
         try:
             response = self._client.get(
-                URLs1337x.TORRENT.format(id=id))
+                URL_TORRENT.format(id=id))
         except Exception as e:
             raise ConnectionError(
                 "Error during 1337x magnet link search GET request, check internet connection!") from e
 
         self._magnet_link_parser.feed(response.text)
-        
+
         return self._magnet_link_parser.get_magnet_link(id)
-
-
-
-      
