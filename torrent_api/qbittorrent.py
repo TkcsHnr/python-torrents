@@ -1,16 +1,21 @@
 import httpx
 from utils import QBitTorrentURLs, QBitTorrentAuthError, ConnectionError
+from credentials import QBitTorrentCredentials
 
 
 class QBitTorrentClient:
 
-    def __init__(self, url: str, username: str, password: str) -> None:
-        self._url = url
+    def __init__(self, host: str, port: int, username: str, password: str) -> None:
+        self._url = f'http://{host}:{port}'
         self._SID = None
         self._username = username
         self._password = password
 
         self._login()
+        
+    @classmethod
+    def from_credentials(cls, credentials: QBitTorrentCredentials):
+        return cls(credentials.host, credentials.port, credentials.username, credentials.password)
 
     def _login(self):
         credentials = {
