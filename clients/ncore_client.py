@@ -1,6 +1,6 @@
 from clients import LoginClient, ClientName
 from parsers import NcoreParser
-from utils import SearchResults, CredentialError, ConnectionError
+from utils import SearchResults, CredentialError, ConnectionError, TooShortQueryError
 
 URL_BASE = "https://ncore.pro"
 URL_INDEX = URL_BASE + "/index.php"
@@ -33,7 +33,7 @@ class NcoreClient(LoginClient):
 
     def search(self, query: str, page: int = 1):
         if len(query) < 3:
-            return
+            raise TooShortQueryError("The search query should be at least 3 characters long!")
 
         try:
             response = self._client.get(

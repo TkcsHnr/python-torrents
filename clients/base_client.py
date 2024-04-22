@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from utils import SearchResults
+from utils import SearchResults, Torrent
 from parsers import Parser
 from utils import CredentialError
 import httpx
@@ -16,6 +16,18 @@ class Client(ABC):
     @abstractmethod
     def search(self, query: str, page: int = 1) -> SearchResults:
         pass
+
+    def get_torrent_bytes(self, torrent: Torrent) -> bytes:
+        try:
+            response = self._client.get(torrent.download)
+        except Exception as e:
+            raise ConnectionError(
+                f"Error while downloading torrent.") from e
+        
+        return response.content
+    
+    def destroy(self):
+        self._client.close()
 
 
 class ClientName(Enum):
