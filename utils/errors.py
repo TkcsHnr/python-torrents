@@ -9,3 +9,6 @@ class NcoreKeyNotFoundError(Exception):
 
 class QBitTorrentAuthError(Exception):
     pass
+
+class TooShortQueryError(Exception):
+    pass
