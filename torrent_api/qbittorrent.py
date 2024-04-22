@@ -2,8 +2,9 @@ import httpx
 from utils import QBitTorrentAuthError, ConnectionError
 from credentials import QBitTorrentCredentials
 
-QBIT_LOGIN = "/api/v2/auth/login" 
+QBIT_LOGIN = "/api/v2/auth/login"
 QBIT_ADD = "/api/v2/torrents/add"
+
 
 class QBitTorrentClient:
 
@@ -14,7 +15,7 @@ class QBitTorrentClient:
         self._password = password
 
         self._login()
-        
+
     @classmethod
     def from_credentials(cls, credentials: QBitTorrentCredentials):
         return cls(credentials.host, credentials.port, credentials.username, credentials.password)
@@ -32,23 +33,26 @@ class QBitTorrentClient:
             raise ConnectionError(
                 "Error during qbittorrent login POST request") from e
 
-    def download(self, url: str, savepath: str = None):
+    def download(self, from_url: str = None, from_file: bytes = None, savepath: str = None):
         if not self._SID:
             raise QBitTorrentAuthError(
                 "SID for qbittorrent authentication not found")
 
         payload = {
-            "urls": url,
+            "urls": from_url,
             "savepath": savepath,
             "category": "python-movies"
         }
         cookies = {
             "SID": self._SID
         }
+        files = {
+            "torrents": from_file
+        } if from_file else None
 
         try:
             httpx.post(
-                self._url + QBIT_ADD, data=payload, cookies=cookies)
+                self._url + QBIT_ADD, data=payload, cookies=cookies, files=files)
         except Exception as e:
             raise ConnectionError(
                 "Error during qbittorrent download POST request") from e
