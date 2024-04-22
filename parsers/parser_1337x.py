@@ -24,7 +24,7 @@ class Parser1337x(Parser):
             leech = row.select_one('td.leeches').text
             size = row.select_one('td.size').text
 
-            yield Torrent(int(id), title, size, int(seed), int(leech), download=None)
+            yield Torrent(int(id), title, size, int(seed), int(leech))
 
         return []
 

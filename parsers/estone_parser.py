@@ -3,7 +3,7 @@ from bs4 import Tag
 from utils import Torrent
 import re
 
-URL_DOWNLOAD = "https://estone.cc/download.php?id={id}&name={title}.torrent"
+URL_DOWNLOAD = "https://estone.cc/download.php?id={id}&name=[eStone]{title}.torrent"
 
 
 class EstoneParser(Parser):

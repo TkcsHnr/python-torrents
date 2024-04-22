@@ -34,9 +34,9 @@ class ThePirateBayParser(Parser):
             leech = row.select_one('td:last-child').text
 
             magnet_link = row.select_one('td:nth-child(2) > a')
-            download = magnet_link.get('href')
+            magnet = magnet_link.get('href')
 
-            yield (Torrent(int(id), title, size, int(seed), int(leech), download))
+            yield (Torrent(int(id), title, size, int(seed), int(leech), magnet=magnet))
 
         return []
 
