@@ -4,6 +4,14 @@ from dataclasses import dataclass
 from clients import ClientName
 
 
+ENV_PATH = "credentials/.env"
+
+QBITTORRENT_HOST_KEY = 'qbittorrent_host'
+QBITTORRENT_PORT_KEY = 'qbittorrent_port'
+QBITTORRENT_USERNAME_KEY = 'qbittorrent_username'
+QBITTORRENT_PASSWORD_KEY = 'qbittorrent_password'
+
+
 @dataclass
 class ClientCredentials:
     username: str
@@ -27,11 +35,7 @@ class QBitTorrentCredentials:
 class CredentialsManager:
 
     def __init__(self) -> None:
-        load_dotenv()
-        self._qbittorrent_host_key = 'qbittorrent_host'
-        self._qbittorrent_port_key = 'qbittorrent_port'
-        self._qbittorrent_username_key = 'qbittorrent_username'
-        self._qbittorrent_password_key = 'qbittorrent_password'
+        load_dotenv(dotenv_path=ENV_PATH)
 
     def _get_env(self, key: str):
         if key in os.environ.keys():
@@ -54,29 +58,29 @@ class CredentialsManager:
 
         if username:
             os.environ[username_key] = username
-            set_key('.env', username_key, username)
+            set_key(ENV_PATH, username_key, username)
         if password:
             os.environ[password_key] = password
-            set_key('.env', password_key, password)
+            set_key(ENV_PATH, password_key, password)
 
     def get_qbittorrent_credentials(self) -> QBitTorrentCredentials:
-        host = self._get_env(self._qbittorrent_host_key)
-        port = self._get_env(self._qbittorrent_port_key)
-        username = self._get_env(self._qbittorrent_username_key)
-        password = self._get_env(self._qbittorrent_password_key)
+        host = self._get_env(QBITTORRENT_HOST_KEY)
+        port = self._get_env(QBITTORRENT_PORT_KEY)
+        username = self._get_env(QBITTORRENT_USERNAME_KEY)
+        password = self._get_env(QBITTORRENT_PASSWORD_KEY)
 
         return QBitTorrentCredentials(host, port, username, password)
 
     def set_qbittorrent_credentials(self, host: str, port: int, username: str, password: str):
         if host:
-            os.environ[self._qbittorrent_host_key] = host
-            set_key('.env', self._qbittorrent_host_key, host)
+            os.environ[QBITTORRENT_HOST_KEY] = host
+            set_key(ENV_PATH, QBITTORRENT_HOST_KEY, host)
         if port:
-            os.environ[self._qbittorrent_port_key] = port
-            set_key('.env', self._qbittorrent_port_key, port)
+            os.environ[QBITTORRENT_PORT_KEY] = port
+            set_key(ENV_PATH, QBITTORRENT_PORT_KEY, port)
         if username:
-            set_key('.env', self._qbittorrent_username_key, username)
-            os.environ[self._qbittorrent_username_key] = username
+            set_key(ENV_PATH, QBITTORRENT_USERNAME_KEY, username)
+            os.environ[QBITTORRENT_USERNAME_KEY] = username
         if password:
-            os.environ[self._qbittorrent_password_key] = password
-            set_key('.env', self._qbittorrent_password_key, password)
+            os.environ[QBITTORRENT_PASSWORD_KEY] = password
+            set_key(ENV_PATH, QBITTORRENT_PASSWORD_KEY, password)
